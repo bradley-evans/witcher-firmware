@@ -2,7 +2,7 @@
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("Initializing Witcher Badge Firmware")
+    Serial.println("Initializing Witcher Badge Firmware");
 }
 
 void loop() {

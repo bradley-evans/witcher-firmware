@@ -1,2 +1,10 @@
-# Ignore PlatformIO build artifacts
+# Ignore build artifacts
 .pio/
+build/
+artifacts/
+
+# Local development artifacts
+.vscode/
+*.swp
+sdkconfig
+

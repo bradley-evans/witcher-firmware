@@ -16,11 +16,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set up QEMU
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qemu -system
+
     - name: Build Docker image
       run: docker build -t witcher-firmware .
     
     - name: Run build inside of Docker
-      run: docker run witcher-firmware
+      run: docker run --name build-container witcher-firmware platformio run --silent
 
     - name: Run tests inside of Docker
-      run: docker run witcher-firmware platformio test
+      run: docker exec build-container qemu-system-xtensa -nographic -machine esp32 -drive file=.pio/build/esp32/firmware.bin,if=mtd,format=raw
+
+    - name: Clean up Docker container
+      run: docker rm -f build-container
