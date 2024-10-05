@@ -3,4 +3,6 @@
 
 #include <iostream>
 
+// declarations will go here
+
 #endif
