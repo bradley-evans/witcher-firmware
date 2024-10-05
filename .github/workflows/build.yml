@@ -17,10 +17,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build Docker image
-      run: docker build -t witcher-firmware-build .
+      run: docker build -t witcher-firmware .
     
     - name: Run build inside of Docker
-      run: docker run witcher-firmware-build
+      run: docker run witcher-firmware
 
     - name: Run tests inside of Docker
-      run: docker run witcher-firmware-build platformio test
+      run: docker run witcher-firmware platformio test
