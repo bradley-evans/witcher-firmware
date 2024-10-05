@@ -1,6 +1,9 @@
 #include "witcher.h"
 
-
-int main() {
+void setup() {
     std::cout << "Hello, world!" << std::endl;
+}
+
+void loop() {
+    // Do nothing, for now.
 }
