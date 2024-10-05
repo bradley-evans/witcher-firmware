@@ -1,0 +1,26 @@
+name: Build Firmware
+
+on:
+  push:
+    branches:
+      - main
+    pull_request:
+      branches:
+      - main 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build -t witcher-firmware-build .
+    
+    - name: Run build inside of Docker
+      run: docker run witcher-firmware-build
+
+    - name: Run tests inside of Docker
+      run: docker run witcher-firmware-build platformio test
