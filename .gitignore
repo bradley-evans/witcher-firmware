@@ -2,7 +2,7 @@
 .pio/
 build/
 artifacts/
-managed_components/
+managed_components/*
 
 # Local development artifacts
 .vscode/
