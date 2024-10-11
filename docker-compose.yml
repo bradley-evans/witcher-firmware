@@ -1,0 +1,23 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    container_name: wf-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - ENV_VAR=example
+    command: tail -f /dev/null
+  test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.test
+    container_name: wf-test
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - ENV_VAR=example
+    command: tail -f /dev/null

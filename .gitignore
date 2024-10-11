@@ -2,9 +2,13 @@
 .pio/
 build/
 artifacts/
+managed_components/
 
 # Local development artifacts
 .vscode/
 *.swp
 sdkconfig
+dependencies.lock
+*.old
+
 

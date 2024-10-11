@@ -1,0 +1,31 @@
+FROM espressif/idf:release-v5.3
+
+WORKDIR /usr/src/app
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get -y -q update && apt-get install -y -q \
+    libgcrypt20 \
+    libglib2.0-0 \
+    libpixman-1-0 \
+    libslirp0 \
+    python3-venv \
+    pkg-config \
+    libglib2.0-dev \
+    cmake \
+    ninja-build \
+    python3-pip
+RUN pip install platformio
+RUN platformio platform install espressif32 --with-package framework-arduinoespressif32
+
+RUN git clone https://github.com/espressif/qemu.git /usr/src/qemu-esp32 && \
+    cd /usr/src/qemu-esp32 && \
+    git submodule update --init --recursive
+
+WORKDIR /usr/src/qemu-esp32
+RUN mkdir -p /usr/src/qemu-esp32/build && \
+    cd /usr/src/qemu-esp32/build && \
+    ../configure --target-list=xtensa-softmmu,xtensaeb-softmmu --enable-sanitizers && \
+    make -j$(nproc) && \
+    make install
+
+WORKDIR /usr/src/app
