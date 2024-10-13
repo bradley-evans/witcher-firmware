@@ -1,40 +1,37 @@
+
+/**
+ * @file main.cpp
+ * @brief Main firmware file for the Witcher Badge.
+ *
+ * This file contains the setup and main loop for the Witcher Badge firmware.
+ * It initializes the serial communication, processes serial input, and executes commands.
+ */
+
 #include "witcher.h"
-
-char inputBuffer[MAX_INPUT_LENGTH];
-int inputIndex = 0;
-
-void setup() {
-    Serial.begin(115200);
-    Serial.println("Initializing Witcher Badge Firmware");
-}
-
-void executeCommand(const char *command) {
-    Serial.print("Received command: ");
-    Serial.println(command);
-}
-
-void processSerialInput() {
-    if (Serial.available()) {
-        char c = Serial.read();
-        Serial.write(c);    // Echo the character
-        if (c == '\n' || c == '\r') {
-            inputBuffer[inputIndex] = '\0'; // Null-terminate the string
-            executeCommand(inputBuffer);
-            inputIndex = 0; // Reset the input buffer index
-        } else if (inputIndex < MAX_INPUT_LENGTH - 1) {
-            inputBuffer[inputIndex++] = c; // Add character to input buffer
-        }
-    }
-}
-
-void loop() {
-    processSerialInput();
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-}
+#include "cli.h"
+#include "led.h"
 
 extern "C" void app_main() {
-    setup();
+    CLI cli;
+    LED statusled = LED(2);
+    // Create tasks
+    xTaskCreate(
+        CLI::taskFunction,  // Task function
+        "Serial CLI",       // Task name
+        4096,               // Stack size
+        &cli,               // Task parameters
+        1,                  // Priority
+        NULL                // Task handle
+    );
+    xTaskCreate(
+        LED::taskFunction,  // Task function
+        "Status LED",       // Task name
+        4096,               // Stack size
+        &statusled,         // Task parameters
+        1,                  // Priority
+        NULL                // Task handle
+    )
     while (true) {
-        loop();
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }

@@ -8,8 +8,6 @@
 #include "esp_event.h"
 #include "nvs_flash.h"
 
-#define MAX_INPUT_LENGTH 64
-
 // declarations will go here
 
 #endif
