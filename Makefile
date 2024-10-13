@@ -11,16 +11,19 @@ ARTIFACTS_DIR = artifacts
 OUTPUT_BINARY = .pio/build/esp32/firmware.bin
 
 # Default target
-all: dockerbuild
+all: firmware
+
+firmware:
+	idf.py build
 
 qemu:
-	. /opt/esp/idf/export.sh && cd /usr/src/app && idf.py qemu
+	idf.py qemu
 
 flash:
-	. /opt/esp/idf/export.sh && cd /usr/src/app && idf.py flash
+	idf.py flash
 
 monitor:
-	. /opt/esp/idf/export.sh && cd /usr/src/app && idf.py monitor
+	idf.py monitor
 
 # Build the project using Docker
 dockerbuild-qemu:

@@ -22,9 +22,4 @@ jobs:
 
     steps:    
     - name: Build firmware in container
-      run: |
-        docker run --rm \
-        -v ${{ github.workspace }}:/workspace \
-        -w /workspace \
-        ghcr.io/witcher-firmware/witcher-firmware-dev:latest \
-        make -j$(nproc) firmware
+      run: make -j$(nproc) firmware
