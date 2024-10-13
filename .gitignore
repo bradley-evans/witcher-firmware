@@ -11,4 +11,5 @@ sdkconfig
 dependencies.lock
 *.old
 
-
+# Local scripts
+build-docker.sh
