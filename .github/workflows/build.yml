@@ -27,7 +27,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Pull witcher-firmware-dev container
-      run: docker pull ghcr.io/witcher-firmware/witcher-firmware-dev:latest
+      run: docker pull ghcr.io/bradley-evans/witcher-firmware/witcher-firmware-dev:latest
     
     - name: Build firmware in container
       run: |
