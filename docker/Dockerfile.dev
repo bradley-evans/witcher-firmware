@@ -23,5 +23,7 @@ RUN git config --global --add safe.directory /usr/src/app
 ENV IDF_PATH=/opt/esp/idf
 ENV PATH=$IDF_PATH:IDF_PATH/tools:$PATH
 
+RUN echo ". /opt/esp/idf/export.sh" >> /root/.profile 
+
 WORKDIR /usr/src/app
 RUN platformio run --silent
