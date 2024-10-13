@@ -14,16 +14,25 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2      docker exec build-container qemu-system-xtensa -nographic -machine esp32 -drive file=.pio/build/esp32/firmware.bin,if=mtd,format=raw
+      uses: actions/checkout@v2
 
-    - name: Build Docker image
-      run: docker build -t witcher-firmware .
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
     
-    - name: Run build inside of Docker
-      run: docker run --name build-container witcher-firmware platformio run --silent
+    - name: Login to Github Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run tests inside of Docker
-      run: docker exec build-container qemu-system-xtensa -nographic -machine esp32 -drive file=.pio/build/esp32/firmware.bin,if=mtd,format=raw
-
-    - name: Clean up Docker container
-      run: docker rm -f build-container
+    - name: Pull witcher-firmware-dev container
+      run: docker pull ghcr.io/witcher-firmware/witcher-firmware-dev:latest
+    
+    - name: Build firmware in container
+      run: |
+        docker run --rm \
+        -v ${{ github.workspace }}:/workspace \
+        -w /workspace \
+        ghcr.io/witcher-firmware/witcher-firmware-dev:latest \
+        make -j$(nproc) firmware
